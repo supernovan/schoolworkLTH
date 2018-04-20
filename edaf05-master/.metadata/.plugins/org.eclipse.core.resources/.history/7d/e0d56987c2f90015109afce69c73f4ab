@@ -1,0 +1,27 @@
+package lab3;
+import java.util.*;
+
+
+public class Vertex implements Comparable<Vertex>  {
+	HashMap<Edges, Integer> edges;
+	String city;
+	int weight;
+	
+	public Vertex(String city) {
+		edges = new HashMap<Edges, Integer>();
+		this.city = city;
+	}
+	
+	public void addEdge(Vertex v, int dist) {
+		edges.put(v, dist);
+	}
+	
+	public int getDist(Vertex v) {
+		return edges.get(v);
+	}
+	
+	
+	public List getL() {
+		
+	}
+}

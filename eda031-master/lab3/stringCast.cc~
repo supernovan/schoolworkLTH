@@ -1,0 +1,31 @@
+#include <istream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
+#include "date.h"
+
+using namespace std;
+
+template <typename T> T stringCast(const string& s) {
+    T object;
+    istringstream istream(s);
+        if (istream >> object) {
+            return object;
+    } else {
+	throw invalid_argument("Cannot cast string to ibject");
+	}
+}
+
+int main() {
+    try {
+        int i = stringCast<int>("42");
+        double d = stringCast<double>("13.37");
+        Date date = stringCast<Date>("1996-01-01");
+	cout << i <<endl;
+	cout << d << endl;
+	cout << date << endl;
+    } catch (invalid_argument& e) {
+        cout << "Error: " << e.what() << endl;
+    }
+}

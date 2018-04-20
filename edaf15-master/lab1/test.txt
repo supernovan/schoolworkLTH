@@ -1,0 +1,1 @@
+Summan av element är: 3

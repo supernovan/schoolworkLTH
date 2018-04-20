@@ -1,0 +1,12 @@
+package lab2;
+
+public class Edge {
+	
+	private Head first, second;
+	
+	public Edge(Head first, Head second) {
+		this.first = first;
+		this.second = second;
+	}
+	
+}

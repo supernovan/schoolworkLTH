@@ -1,0 +1,17 @@
+package lab3;
+
+public class Edge implements Compareable<Edge> {
+	String str;
+	int weight;
+	
+	public Edge(String city, int weight) {
+		str = city;
+		this.weight = weight;
+	}
+	
+	@Override 
+	public int compareTo(Object o) {
+		
+		return 0;
+	}
+}

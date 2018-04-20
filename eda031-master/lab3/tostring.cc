@@ -1,0 +1,33 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include "date.h"
+
+using namespace std;
+
+template <typename T> string toString(const T& object) {
+    ostringstream ss;
+    ss << object;
+    return ss.str();
+}
+
+int main()
+{
+    bool work = true;
+
+    int i = 42;
+    Date date = Date(1337, 4, 2);
+
+    if(toString(i) != "42") {
+        cout << "toString failed on int" << endl;
+        work = false;
+    }
+    if (toString(date) != "1337-04-02") {
+        cout << "toString on Date failed" <<endl;
+        work = false;
+    }
+
+    if (work) {
+        cout << "toString works amazingly good"<<endl;
+    }
+}

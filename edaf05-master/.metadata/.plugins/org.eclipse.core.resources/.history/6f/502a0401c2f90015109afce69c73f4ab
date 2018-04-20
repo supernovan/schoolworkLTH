@@ -1,0 +1,32 @@
+package lab3;
+import java.util.*;
+
+
+public class Vertex  {
+	HashMap<Vertex, Integer> edges;
+	String city;
+	
+	public Vertex(String city) {
+		edges = new HashMap<Vertex, Integer>();
+		this.city = city;
+	}
+	
+	public void addEdge(Vertex v, int dist) {
+		edges.put(v, dist);
+	}
+	
+	public int getDist(Vertex v) {
+		return edges.get(v);
+	}
+	
+	public int compareTo(Vertex v1, Vertex v2) {
+		if (edges.get(v1) > edges.get(v2)) {
+			return 1;
+		}
+		else if (edges.get(v1) < edges.get(v2)) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+}

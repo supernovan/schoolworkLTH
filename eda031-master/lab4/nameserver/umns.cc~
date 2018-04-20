@@ -1,0 +1,22 @@
+#include <vector>
+#include <algorithm>
+#include "umns.h"
+
+using namespace std;
+
+void VSN::insert(const HostName& h, const IPAddress& ip) {
+    serverMap.insert({h, ip});
+}
+
+bool VSN::remove(const HostName& h) {
+    return serverMap.erase(h);
+}
+
+IPAddress VSN::lookup(const HostName& h) const {
+    auto it = serverMap.find(h);
+    if (it != serverMap.end()) {
+        return it->second;
+    } else {
+        return NON_EXISTING_ADDRESS;
+    }
+}

@@ -1,0 +1,5 @@
+Type			Visited Nodes		wrongdecisions
+
+SimpleDFS		16034				7991
+SplitSearch1	22425				11217
+SplitSearch2	697987				349057

@@ -1,0 +1,91 @@
+package lab4;
+
+import java.util.*;
+
+public class ClosestPairs {
+	ArrayList<Pair> pairs;
+	ArrayList<Pair> help;
+	public ClosestPairs() {
+		pairs = new ArrayList<Pair>();
+	}
+	
+	public void add(Pair p) {
+		pairs.add(p);
+	}
+	
+	public void sort() {
+		help = new ArrayList<Pair>(pairs.size());
+		mSort(0, pairs.size()-1);
+	}
+	private void mSort(int low, int high) {
+		if (low < high) {
+			int middle = low + (high - low)/2;
+			mSort(low, middle);
+			mSort(middle+1, high);
+			
+			merge(low, middle, high);
+		}
+	}
+	
+	private void merge(int low, int middle, int high) {
+		
+		for (int i = low; i<= high; i++) {
+			help.set(i, pairs.get(i));
+		}
+		
+		
+		int i = low;
+		int j = middle + 1;
+		int k = low;
+		
+		while (i <= middle && j <= high) {
+			if (help.get(i).getX() <= help.get(j).getX()) {
+				pairs.set(k, help.get(i));
+				i++;
+			} else {
+				pairs.set(k, help.get(j));
+				j++;
+			}
+			k++;
+		}
+		
+		while (i <= middle) {
+			pairs.set(k, help.get(i));
+			k++;
+			i++;
+		}
+	}
+	
+	public double closeP() {
+		int middle = 0 + (pairs.size())/2;
+		Pair pl = closeP(0, middle);
+		Pair pr = closeP(middle+1, pairs.size()-1);
+		double dist1 = pairs.get((int) pl.getX()).dist(pairs.get((int) pl.getY()));
+		double dist2 = pairs.get((int) pr.getX()).dist(pairs.get((int) pr.getY()));
+		return dist1 > dist2 ? dist2 : dist1;
+	}
+	
+	private Pair closeP(int l, int u) {
+		if (u - l == 2) {
+			Pair p;
+			if (pairs.get(l).dist(pairs.get(l+1)) > pairs.get(l+1).dist(pairs.get(u))) {
+				p = new Pair(l+1, u);
+				return p;
+			} else if (u - l == 1) {
+				p = new Pair(l, u);
+				return p;
+			}
+		}
+		int middle = l + (u-l)/2;
+		Pair temp1 = closeP(l, middle);
+		Pair temp2 = closeP(middle+1, u);
+		
+		Pair tempX1 = pairs.get((int) temp1.getX());
+		Pair tempY1 = pairs.get((int) temp1.getY());
+		Pair tempX2 = pairs.get((int) temp2.getX());
+		Pair tempY2 = pairs.get((int) temp2.getY());
+		return tempX1.dist(tempY1) < tempX2.dist(tempY2) ? temp1 : temp2;
+	}
+	
+	public 
+}

@@ -1,0 +1,15 @@
+package lab3;
+import java.util.*;
+public class Vertex  {
+	HashSet<Vertex> edges;
+	String city;
+	
+	public Vertex(String city) {
+		edges = new HashSet<Vertex>();
+		this.city = city;
+	}
+	
+	public boolean compareTo(Vertex v1, Vertex v2) {
+		return ;
+	}
+}

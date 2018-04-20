@@ -1,0 +1,33 @@
+package lab3;
+
+import java.util.*;
+
+public class Graph {
+	ArrayList<Vertex> cities;
+	public Graph() {
+		cities = new ArrayList<Vertex>();
+	}
+	
+	public boolean add(Vertex city) {
+		return cities.add(city);
+	}
+	
+	public Set<Edge> getEdgeTree(int index) {
+		return cities.get(index).getL();
+	}
+	
+	public int krus() {
+		List<Edge> allSets = new ArrayList<Edge>();
+		for (int i = 0; i<cities.size(); i++) {
+			allSets.addAll(cities.get(i).getL());
+		}
+		Collections.sort( allSets);
+		//merge edgelists
+		//sort in 1..2.. osv
+		//bygg en ny lista där man undviker cirkulationer
+		// Lägg in i HashSet och kolla om båda finns med andra ord.
+		//skriv ut längden 
+		
+		return 0;
+	}
+}

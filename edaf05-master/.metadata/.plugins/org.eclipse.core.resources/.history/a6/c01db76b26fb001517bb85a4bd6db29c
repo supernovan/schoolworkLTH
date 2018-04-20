@@ -1,0 +1,23 @@
+package lab4;
+
+public class Pair {
+	double x;
+	double y;
+	public Pair(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+	public double getX() {
+		return x;
+	}
+	
+	public double getY() {
+		return y;
+	}
+	
+	public double dist(Pair p) {
+		double x_ = x + p.getX();
+		double y_ = y + p.getY();
+		return Math.sqrt(x_*x_ + y_*y_);
+	}
+}

@@ -1,0 +1,83 @@
+package lab4;
+
+import java.util.*;
+
+public class ClosestPairs {
+	ArrayList<Pair> pairX;
+	ArrayList<Pair> pairY;
+	ArrayList<Pair> help;
+	public ClosestPairs() {
+		pairX = new ArrayList<Pair>();
+		pairY = new ArrayList<Pair>();
+	}
+	
+	public void add(Pair p) {
+		pairX.add(p);
+		pairY.add(p);
+	}
+	
+	public void sort() {
+		help = new ArrayList<Pair>(pairX.size());
+		mSort(0, pairX.size()-1, true);
+		mSort(0, pairX.size()-1, false);
+	}
+	private void mSort(int low, int high, boolean flag) {
+		if (low < high) {
+			int middle = low + (high - low)/2;
+			mSort(low, middle, flag);
+			mSort(middle+1, high, flag);
+			
+			merge(low, middle, high, flag);
+		}
+	}
+	
+	private void merge(int low, int middle, int high, boolean flag) {
+		
+		for (int i = low; i<= high; i++) {
+			if (flag) {
+				help.set(i, pairX.get(i));
+			} else {
+				help.set(i, pairY.get(i));
+			}
+		}
+		
+		int i = low;
+		int j = middle + 1;
+		int k = low;
+		
+		while (i <= middle && j <= high) {
+			if (help.get(i).get(flag) <= help.get(j).get(flag)) {
+				if (flag) {
+					pairX.set(k, help.get(i));
+				} else {
+					pairY.set(k, help.get(i));
+				}
+				i++;
+			} else {
+				if (flag) {
+					pairX.set(k, help.get(j));
+				} else {
+					pairY.set(k, help.get(j));
+				}
+				j++;
+			}
+			k++;
+		}
+		
+		while (i <= middle) {
+			if (flag) {
+				pairX.set(k, help.get(i));
+			} else {
+				pairY.set(k, help.get(i));
+			}
+			k++;
+			i++;
+		}
+	}
+	
+	public Pair closeP(ArrayList<Pair> pX, ArrayList<Pair> pY) {
+		
+		
+		return new Pair(0, 1);
+	}
+}

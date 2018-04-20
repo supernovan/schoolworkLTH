@@ -1,0 +1,22 @@
+package lab3;
+
+import java.util.*;
+
+public class Graph {
+	ArrayList<Vertex> cities;
+	public Graph() {
+		cities = new ArrayList<Vertex>();
+	}
+	
+	public boolean add(Vertex city) {
+		return cities.add(city);
+	}
+	
+	public List<Edge> getEdgeTree(int index) {
+		return cities.get(index).getL();
+	}
+	
+	public int getS() {
+		return cities.size();
+	}
+}

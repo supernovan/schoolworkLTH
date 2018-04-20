@@ -1,0 +1,144 @@
+package lab4;
+
+import java.util.*;
+
+public class ClosestPairs {
+	ArrayList<Point> pairs;
+	ArrayList<Point> help;
+	Point helper;
+	double d;
+	public ClosestPairs() {
+		pairs = new ArrayList<Point>();
+	}
+	
+	public void add(Point p) {
+		pairs.add(p);
+		System.out.println("banan");
+	}
+	
+	public int[] sort() {
+		help = new ArrayList<Point>(pairs.size());
+		mSort(0, pairs.size()-1);
+		double dist1 = closeP();
+		Point p1 = helper;
+		double dist2 = closeP();
+		helper = dist1 < dist2 ? p1 : helper;
+		double dist = dist1 < dist2 ? dist1 : dist2;
+		
+		int[] cPoint = pointC(dist);
+		return cPoint;
+	}
+	private void mSort(int low, int high) {
+		if (low < high) {
+			int middle = low + (high - low)/2;
+			mSort(low, middle);
+			mSort(middle+1, high);
+			
+			merge(low, middle, high);
+		}
+	}
+	
+	private void merge(int low, int middle, int high) {
+		
+		for (int i = low; i<= high; i++) {
+			help.set(i, pairs.get(i));
+		}
+		
+		
+		int i = low;
+		int j = middle + 1;
+		int k = low;
+		
+		while (i <= middle && j <= high) {
+			if (help.get(i).getX() <= help.get(j).getX()) {
+				pairs.set(k, help.get(i));
+				i++;
+			} else {
+				pairs.set(k, help.get(j));
+				j++;
+			}
+			k++;
+		}
+		
+		while (i <= middle) {
+			pairs.set(k, help.get(i));
+			k++;
+			i++;
+		}
+	}
+	
+	private double closeP() {
+		int middle = 0 + (pairs.size())/2;
+		Point pl = closeP(0, middle);
+		Point pr = closeP(middle+1, pairs.size()-1);
+		double dist1 = pairs.get((int) pl.getX()).dist(pairs.get((int) pl.getY()));
+		double dist2 = pairs.get((int) pr.getX()).dist(pairs.get((int) pr.getY()));
+		helper = dist1 > dist2 ? pr : pl;
+		return dist1 > dist2 ? dist2 : dist1;
+	}
+	
+	private Point closeP(int l, int u) {
+		if (u - l == 2) {
+			Point p;
+			if (pairs.get(l).dist(pairs.get(l+1)) > pairs.get(l+1).dist(pairs.get(u))) {
+				p = new Point(l+1, u);
+				return p;
+			} else if (u - l == 1) {
+				p = new Point(l, u);
+				return p;
+			}
+		}
+		int middle = l + (u-l)/2;
+		Point temp1 = closeP(l, middle);
+		Point temp2 = closeP(middle+1, u);
+		
+		Point tempX1 = pairs.get((int) temp1.getX());
+		Point tempY1 = pairs.get((int) temp1.getY());
+		Point tempX2 = pairs.get((int) temp2.getX());
+		Point tempY2 = pairs.get((int) temp2.getY());
+		return tempX1.dist(tempY1) < tempX2.dist(tempY2) ? temp1 : temp2;
+	}
+	
+	private int[] pointC(double dist) {
+		int middle = (pairs.size()-1)/2;
+		double l = pairs.get(middle).getX() + (pairs.get(middle+1).getX() - pairs.get(middle).getX())/2;
+		ArrayList<Point> finalP = new ArrayList<Point>(16);
+		boolean flag = false;
+		
+		for (int i = 0; i<pairs.size(); i++) {
+			if (pairs.get(i).getX() > l - dist && pairs.get(i).getX() < l + dist) {
+				for (int j = 0; j<finalP.size(); j++) {
+					if (pairs.get(i).getY() < finalP.get(j).getY()) {
+						finalP.add(j, pairs.get(i));
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					finalP.add(pairs.get(i));
+				}
+				flag = false;
+			}
+		}
+		int[] pair = new int[2];
+		for (int i = 0; i<finalP.size(); i++) {
+			for (int j = i+1; j<finalP.size(); j++) {
+				if (pair[0] == 0) {
+					pair[0] = finalP.get(i).getP();
+					pair[1] = finalP.get(j).getP();
+					d = finalP.get(i).dist(finalP.get(j));
+				}
+				else if (finalP.get(j).dist(finalP.get(i)) < pairs.get(pair[0]).dist(pairs.get(pair[1]))) {
+					pair[0] = finalP.get(i).getP();
+					pair[1] = finalP.get(j).getP();
+					d = finalP.get(i).dist(finalP.get(j));
+				}
+			}
+		}
+		return pair;
+	}
+	
+	public double getD() {
+		return d;
+	}
+}

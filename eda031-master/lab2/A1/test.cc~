@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <ctype.h>
+#include <boost/algorithm/string.hpp>
+
+using namespace std;
+
+
+int main() {
+	string word;
+	ofstream outfile ("words.1.txt");
+	ifstream infile ("web2.txt");
+
+	if (infile.is_open()) {
+		while (getline(infile, word)) {
+			transform(word.begin(), word.end(), word.begin(), ::tolower);
+			string output = boost::replace_all_copy(word, "\n", "\r\n");
+			size_t len = word.length();
+			outfile << output;
+
+		}
+	}
+	else {
+		cout << "Unable to open the file" << "\n";
+	}
+	outfile.close();
+	infile.close();
+}

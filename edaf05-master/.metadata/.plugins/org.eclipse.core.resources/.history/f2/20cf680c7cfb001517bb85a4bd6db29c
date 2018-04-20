@@ -1,0 +1,168 @@
+package lab4;
+
+import java.util.*;
+
+public class ClosestPairs {
+	ArrayList<Point> pairs;
+	Point[] help;
+	Point helper;
+	double d;
+	public ClosestPairs() {
+		pairs = new ArrayList<Point>();
+	}
+	
+	public void add(Point p) {
+		pairs.add(p);
+	}
+	
+	public int[] sort() {
+		
+		if (pairs.size() == 14) {
+			brute();
+		}
+		
+		mSort(0, pairs.size()-1);
+		double dist = closeP();
+		d = dist;
+
+		int[] cPoint = pointC(dist);
+		return cPoint;
+	}
+	private void mSort(int low, int high) {
+		if (low < high) {
+			int middle = low + (high - low)/2;
+			mSort(low, middle);
+			mSort(middle+1, high);
+			
+			merge(low, middle, high);
+		}
+	}
+	
+	private void merge(int low, int middle, int high) {
+		
+		help = new Point[pairs.size()];
+		
+		for (int i = low; i<= high; i++) {
+			help[i] =  pairs.get(i);
+		}
+		
+		
+		int i = low;
+		int j = middle + 1;
+		int k = low;
+		
+		while (i <= middle && j <= high) {
+			if (help[i].getX() <= help[j].getX()) {
+				pairs.set(k, help[i]);
+				i++;
+			} else {
+				pairs.set(k, help[j]);
+				j++;
+			}
+			k++;
+		}
+		
+		while (i <= middle) {
+			pairs.set(k, help[i]);
+			k++;
+			i++;
+		}
+	}
+	
+	private double closeP() {
+		int middle = 0 + (pairs.size()-1)/2;
+		Point pl = closeP(0, middle);
+		Point pr = closeP(middle+1, pairs.size()-1);
+		double dist1 = pairs.get((int) pl.getX()).dist(pairs.get((int) pl.getY()));
+		double dist2 = pairs.get((int) pr.getX()).dist(pairs.get((int) pr.getY()));
+		helper = dist1 > dist2 ? pr : pl;
+		return dist1 > dist2 ? dist2 : dist1;
+	}
+	
+	private Point closeP(int l, int u) {
+		Point p = null;
+		if (u - l <= 3) {
+			for (int i = l; i<u; i++) {
+				for (int j = i+1; j<=u; j++) {
+					
+					if (p == null) {
+						p = new Point(i, j);
+						continue;
+					}
+					double d1 = pairs.get(i).dist(pairs.get(j));
+					double d2 = pairs.get((int) p.getX()).dist(pairs.get((int) p.getY()));
+					if (d1 < d2) {
+						p = new Point(i, j);
+					}
+				}
+			}
+			if (p == null) {
+				p = new Point(l, u);
+			}
+			return p;
+		}
+		int middle = l + (u-l)/2;
+		Point temp1 = closeP(l, middle);
+		Point temp2 = closeP(middle+1, u);
+		
+		Point tempX1 = pairs.get((int) temp1.getX());
+		Point tempY1 = pairs.get((int) temp1.getY());
+		Point tempX2 = pairs.get((int) temp2.getX());
+		Point tempY2 = pairs.get((int) temp2.getY());
+		return tempX1.dist(tempY1) < tempX2.dist(tempY2) ? temp1 : temp2;
+	}
+	
+	private int[] pointC(double dist) {
+		int middle = (pairs.size()-1)/2;
+		double l = pairs.get(middle).getX() + (pairs.get(middle+1).getX() - pairs.get(middle).getX())/2;
+		ArrayList<Point> finalP = new ArrayList<Point>(16);
+		boolean flag = false;
+		
+		for (int i = 0; i<pairs.size(); i++) {
+			if (pairs.get(i).getX() > l - dist && pairs.get(i).getX() < l + dist) {
+				for (int j = 0; j<finalP.size(); j++) {
+					if (pairs.get(i).getY() < finalP.get(j).getY()) {
+						finalP.add(j, pairs.get(i));
+						flag = true;
+						break;
+					}
+				}
+				if (!flag) {
+					finalP.add(pairs.get(i));
+				}
+				flag = false;
+			}
+		}
+		int[] pair = new int[2];
+		for (int i = 0; i<finalP.size()-1; i++) {
+			for (int j = i+1; j<finalP.size(); j++) {
+				
+					double tempD = finalP.get(i).dist(finalP.get(j));
+					if (d > tempD) {
+						d = tempD;
+					}
+				
+			}
+		}
+		return pair;
+	}
+	
+	public double getD() {
+		return d;
+	}
+	public int getS() {
+		return pairs.size();
+	}
+	
+	public void brute() {
+		double dist = Integer.MAX_VALUE;
+		for (int i = 0; i<pairs.size()-1; i++) {
+			for (int j = i+1; j<pairs.size(); j++) {
+				if (pairs.get(i).dist(pairs.get(j)) < dist) {
+					dist = pairs.get(i).dist(pairs.get(j));
+				}
+			}
+		}
+		System.out.println(dist + "Potatis");
+	}
+}

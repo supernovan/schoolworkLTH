@@ -1,0 +1,27 @@
+package lab4;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class test {
+	public static void main(String[] args) {
+		
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Skriv in dat-filnamnet");
+		String str = scan.next(); 
+		try (BufferedReader br = new BufferedReader(new FileReader(str))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+}

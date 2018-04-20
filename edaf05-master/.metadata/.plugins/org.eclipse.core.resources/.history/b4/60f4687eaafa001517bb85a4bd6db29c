@@ -1,0 +1,61 @@
+package lab4;
+
+import java.util.*;
+
+public class ClosestPairs {
+	ArrayList<Pair> pairX;
+	ArrayList<Pair> pairY;
+	ArrayList<Pair> help;
+	public ClosestPairs() {
+		pairX = new ArrayList<Pair>();
+		pairY = new ArrayList<Pair>();
+	}
+	
+	public void add(Pair p) {
+		pairX.add(p);
+		pairY.add(p);
+	}
+	
+	public void sort() {
+		help = new ArrayList<Pair>(pairX.size());
+		mSort(0, pairX.size()-1, true);
+		mSort(0, pairX.size()-1, false);
+	}
+	private void mSort(int low, int high, boolean flag) {
+		if (low < high) {
+			int middle = low + (high - low)/2;
+			mSort(low, middle, flag);
+			mSort(middle+1, high, flag);
+			
+			merge(low, middle, high, flag);
+		}
+	}
+	
+	private void merge(int low, int middle, int high, boolean flag) {
+		
+		for (int i = low; i<= high; i++) {
+			 help.set(i, pairX.get(i));
+		}
+		
+		int i = low;
+		int j = middle + 1;
+		int k = low;
+		
+		while (i <= middle && j <= high) {
+			if (help.get(i).get() <= help.get(j).getX()) {
+				pairs.set(k, help.get(i));
+				i++;
+			} else {
+				pairs.set(k, help.get(j));
+				j++;
+			}
+			k++;
+		}
+		
+		while (i <= middle) {
+			pairs.set(k, help.get(i));
+			k++;
+			i++;
+		}
+	}
+}

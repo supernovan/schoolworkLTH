@@ -1,0 +1,7 @@
+
+
+package Neat
+
+class NeuronType {
+  
+}

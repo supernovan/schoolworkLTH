@@ -1,0 +1,6 @@
+INDEX VERSION 1.127+/home/mattias/programmering/java/adk/.metadata/.plugins/org.eclipse.jdt.core
+3408485364.index
+1515359099.index
+1431162455.index
+575340225.index
+3141775227.index

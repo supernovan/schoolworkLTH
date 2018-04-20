@@ -1,0 +1,100 @@
+package lab2;
+import java.util.*;
+
+public class Graph {
+	ArrayList<Head> graph;
+	public Graph() {
+		graph = new ArrayList<Head>();
+	}
+	
+	public boolean add(String str) {
+		if (graph.contains(str)) {
+			return false;
+		} else {
+			Head h = new Head(str);
+			for (int i = 0; i<graph.size(); i++) {
+				String temp = graph.get(i).getStr();
+				if (strCheck(temp, str)) {
+					graph.get(i).addEdge(h);
+				}
+				if (strCheck(str, temp)) {
+					h.addEdge(graph.get(i));
+				}
+			}
+			graph.add(h);
+			return true;
+		}
+	}
+	public int bfs(String h, String tar) {
+		Head iter = null;
+		for (int i = 0; i<graph.size(); i++) {
+			if (graph.get(i).getStr().equals(h)) {
+				iter = graph.get(i);
+				break;
+			}
+		}
+		if (iter == null) {
+			return -1;
+		}
+		
+		LinkedList<Head> q = new LinkedList<Head>();
+		q.addFirst(iter);
+		iter.visited();
+		while (!q.isEmpty()) {
+			Head temp = q.removeFirst();
+			if (temp.getStr().equals(tar)) {
+				int dist = temp.getDist();
+				clear();
+				return dist-1;
+			}
+			for (int i = 0; i<temp.getSize(); i++) {
+				if (!temp.getNeighbor(i).getVisit()) {
+					temp.getNeighbor(i).visited();
+					q.addLast(temp.getNeighbor(i));
+					temp.getNeighbor(i).addDist(temp.getDist());
+				}
+			}
+			
+			
+		}
+		clear();
+		return -1;
+	}
+	
+	private void clear() {
+		for (int i = 0; i<graph.size(); i++) {
+			graph.get(i).clear();
+			for (int j = 0; j<graph.get(i).getSize(); j++) {
+				graph.get(i).getNeighbor(j).clear();
+			}
+		}
+	}
+	
+	public void printGraph() {
+		for (int i = 0; i<graph.size(); i++) {
+			System.out.print(graph.get(i).getStr());
+			for (int j = 0; j<graph.get(i).getSize(); j++) {
+				System.out.print(" " + graph.get(i).getNeighbor(j).getStr());
+			}
+			System.out.print("\n");
+		}
+	}
+	
+	private boolean strCheck(String first, String sec) {
+		String temp = first.substring(first.length()-4, first.length());
+		int count = 0;
+		for (int i = 0; i<temp.length(); i++) {
+			for (int j = 0; j<sec.length(); j++) {
+				if (temp.charAt(i) == sec.charAt(j)) {
+					count++;
+					StringBuilder bob = new StringBuilder(sec);
+					bob.deleteCharAt(j);
+					sec = bob.toString();
+					break;
+				}
+			}
+			return false;
+		}
+		return count == 4;
+	}
+}

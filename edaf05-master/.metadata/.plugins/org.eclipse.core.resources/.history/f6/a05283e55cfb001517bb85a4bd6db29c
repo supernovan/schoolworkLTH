@@ -1,0 +1,44 @@
+package lab4;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
+public class test {
+	public static void main(String[] args) {
+		
+		ClosestPairs c = new ClosestPairs();
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Skriv in dat-filnamnet");
+		String str = scan.next(); 
+		String name;
+		try (BufferedReader br = new BufferedReader(new FileReader("input/" + str))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (line.contains("NAME")) {
+					String[] tok = line.split(" ");
+					name = tok[tok.length-1];
+					continue;
+				} else if (line.matches(".*[a-zA-Z]+.*")) {
+					continue;
+				}
+				line.replace("  ", " ");
+				line.replace("e+0", "*10^");
+				String[] tokens = line.split(" ");
+				Point p = new Point(Double.parseDouble(tokens[1]), Double.parseDouble(tokens[2]));
+				p.setP(Integer.parseInt(tokens[0]));
+				c.add(p);
+				
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+		c.sort();
+		System.out.println(c.getD());
+	}
+}

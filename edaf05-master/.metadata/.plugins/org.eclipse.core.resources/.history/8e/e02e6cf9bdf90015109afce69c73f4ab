@@ -1,0 +1,16 @@
+package lab3;
+
+import java.util.*;
+
+public class Graph {
+	HashSet<Vertex> cities;
+	public Graph() {
+		cities = new HashSet<Vertex>();
+	}
+	
+	public boolean add(Vertex city) {
+		return cities.add(city);
+	}
+	
+	
+}

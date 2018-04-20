@@ -1,0 +1,82 @@
+#include <ctime>  // time and localtime
+#include <iomanip>
+#include <iostream>
+#include <istream>
+#include <ostream>
+#include <string>
+#include <sstream>
+#include "date.h"
+
+using namespace std;
+int Date::daysPerMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+Date::Date() {
+	time_t timer = time(0); // time in seconds since 1970-01-01
+	tm* locTime = localtime(&timer); // broken-down time
+	year = 1900 + locTime->tm_year;
+	month = 1 + locTime->tm_mon;
+	day = locTime->tm_mday;
+}
+
+Date::Date(int y, int m, int d): year{y}, month{m}, day{d} {}
+
+int Date::getYear() const {
+	return year;
+}
+
+int Date::getMonth() const {
+	return month;
+}
+
+int Date::getDay() const {
+	return day;
+}
+ostream& operator <<(ostream& stream, const Date& d) {
+    stream << setw(4) << setfill('0') << d.getYear() << '-';
+    stream << setw(2) << setfill('0') << d.getMonth() << '-';
+    stream << setw(2) << setfill('0') << d.getDay();
+    return stream;
+}
+
+istream& operator >>(istream& stream, Date& d) {
+    string str;
+    char sign1, sign2;
+    int year, month, day;
+    
+    stream >> str;
+    stringstream stringS(str);
+    
+    stringS >> year >> sign1 >> month >> sign2 >> day;
+    //couldn't bother with leap year
+    if (month <= 12 && month >= 1 && day >= 1 &&
+            day <= Date::daysPerMonth[month] && sign1 == '-' &&
+            sign2 == '-') {
+        d.year = year;
+        d.month = month;
+        d.day = day;
+    } else {
+        stream.setstate(ios_base::failbit);
+    }
+    return stream;
+}
+    
+void Date::setDate(int y, int m, int d) {
+	year = y;
+	month = m;
+	day = d;
+}
+
+
+void Date::next() {
+    day++;
+    if (Date::daysPerMonth[month-1] <= day ) {
+        day = 1;
+        month++;
+        if (month> 12) {
+            month = 1;
+            year++;
+        }
+    }
+}
+
+
